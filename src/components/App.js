@@ -26,7 +26,7 @@ class App extends React.Component{
     this.setState({showForm: !this.state.showForm })
    }
    showForm(){
-    document.getElementById("expand").click()
+    document.getElementById("expand").click();
    }
   
   render (){
@@ -50,10 +50,10 @@ class App extends React.Component{
         <Card.Header className="container" style={{"width":"initial","border":"1px solid #e2e1e1"}}><div>
       <div style={{"float":"left"}}>Task(s)</div>
           <TaskHeaderPlus  eventKey="0"></TaskHeaderPlus>
-          <TaskHeader onRef={ref => (this[`taskheader`] = ref)}  eventKey="1"></TaskHeader></div>
+          <TaskHeader eventKey="1"></TaskHeader></div>
         </Card.Header>
         <Accordion.Collapse className="bg-info container" style={{"width":"initial","border":"1px solid #e2e1e1"}} eventKey="1">
-          <Card.Body><TaskForm/></Card.Body>
+          <Card.Body><TaskForm /></Card.Body>
         </Accordion.Collapse>
         <Accordion.Collapse className="bg-light container"  style={{"width":"initial","border":"1px solid #e2e1e1"}} eventKey="0">
           <Card.Body>

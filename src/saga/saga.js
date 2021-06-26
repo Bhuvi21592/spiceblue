@@ -140,31 +140,31 @@ function* addTasks(formdata) {
     }
       
       
-function updateTask(){
-    const getKeyword = 'Bearer '+token;
-    const data= {
-                assigned_user:  "31123", 
-                task_date: '2021-07-22',
-                task_time:5000,
-                is_completed:1,
-		        time_zone: 5000,
-                task_msg: "test update"
-               }
-    return fetchAsync("https://stage.api.sloovi.com/task/lead_6996a7dcdddc4af3b4f71ccb985cea38/task_28a6b622f8fa4e63b0263a6d846817d", { 
-        method: 'PUT' ,
-        headers :{
-            'Authorization': getKeyword,
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',          
-          },
-        body: JSON.stringify(data),   
-    });
-}
-function* updateTasks() {  
+
+function* updateTasks(formdata) {  
     try { 
           token = yield select(getData); 
-        const users = yield fetchAsync(updateTask);
-        yield put({type: action.ADD_TASKS_SUCCESS, data: users});
+              const getKeyword = 'Bearer '+token;
+              let data = formdata.data;
+              const task_id=data.task_id;
+              delete data.task_id;
+           data.is_completed=0;
+            data.time_zone= 5000;
+             const url ="https://stage.api.sloovi.com/task/lead_6996a7dcdddc4af3b4f71ccb985cea38/"+task_id;
+            const users = yield  fetch(url, { 
+                method: 'PUT' ,
+                headers :{
+                    'Authorization': getKeyword,
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',          
+                  }   ,
+                  body: JSON.stringify(data),   
+            });
+        const body = yield call([users, users.json])
+        alert(body.message);
+        yield put({type: action.ADD_TASKS_SUCCESS, data: body});
+        yield put(loadTaskAction());
+       
     } catch (e) {    
         yield put({type: action.ADD_TASKS_ERROR, error: e.message});  
     }
@@ -199,13 +199,18 @@ export const actionCreator=(data)=>({
     type: action.ADD_TASKS,
     data:data
   })
+  export const actionUpdator=(data)=>({
+    type: action.UPDATE_TASKS,
+    data:data
+  })
   export const deleteTaskAction=(data)=>({
     type: action.DELETE_TASKS,
     data:data
   })
   export const getTaskAction=(data)=>({
     type: action.GET_TASK,
-    data :{msg:data.task_msg,date:data.task_date,time:data.task_time,user:data.assigned_user}
+    data :{task_msg:data.task_msg,task_date:data.task_date,task_time:data.task_time,
+        assigned_user:data.assigned_user,task_id:data.id}
 
   })
   export const loadTaskAction=()=>({

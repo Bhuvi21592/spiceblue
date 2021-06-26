@@ -2,6 +2,8 @@ import React, {useContext} from 'react';
 import AccordionContext from 'react-bootstrap/AccordionContext';
 import {useAccordionToggle} from 'react-bootstrap/AccordionToggle';
 import { PlusSquare,DashSquare} from 'react-bootstrap-icons';
+import { useDispatch } from "react-redux";
+import {getTaskAction} from '../saga/saga';
 
 export function TaskHeader({eventKey,callback}) {
   const currentEventKey = useContext(AccordionContext); 
@@ -24,7 +26,9 @@ export function TaskHeader({eventKey,callback}) {
 
 export function TaskHeaderPlus({eventKey,callback}) {
   const currentEventKey = useContext(AccordionContext);
+  const dispatch = useDispatch();
    const toggleOnClick =useAccordionToggle(eventKey, () => {
+    dispatch(getTaskAction({}));
      if(callback)
     callback(eventKey);
   });
