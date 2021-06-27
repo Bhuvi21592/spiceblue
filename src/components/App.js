@@ -6,7 +6,7 @@ import TaskForm from './TaskForm';
 import {TaskHeader,TaskHeaderPlus} from './TaskHeader';
 import { Eye,Trash} from 'react-bootstrap-icons';
 import {deleteTaskAction, loadTaskAction,getTaskAction} from '../saga/saga';
-
+import  "../css/style.css";
 class App extends React.Component{
   constructor(props){
     super(props);
@@ -40,9 +40,14 @@ class App extends React.Component{
        <Trash onClick={()=>{this.props.deleteTaskAction(d.id);}}/></Col>
        </div>);
    
-    return(
-     <>
-     <div style={{"margin-top": "250px","margin-left":"70px"}}>
+    return(<>
+     
+     <section><nav>
+     <ul>
+       <li>Task</li>
+      
+     </ul>
+   </nav><article>   
        <Row>
     <Accordion defaultActiveKey="0"  transition={false}   as={Col} sm={4} md={4} lg={4}>
     
@@ -63,8 +68,8 @@ class App extends React.Component{
         </Accordion.Collapse>
       </Card></Accordion></Row><Row>
        </Row>
-      </div>
-       </>
+      </article></section>
+     </>
     )
   }
 }
