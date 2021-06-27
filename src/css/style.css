@@ -1,0 +1,41 @@
+header {
+    background-color: #666;
+    padding: 30px;
+    text-align: center;
+    font-size: 35px;
+    color: white;
+  }
+  
+article {
+    float: left;
+    padding: 200px 20px 20px 20px;
+    width: 85%;
+     }
+/* Create two columns/boxes that floats next to each other */
+nav {
+    float: left;
+    width: 15%;
+    background:rgb(68, 67, 112);
+    padding: 20px;
+    height: 900px;
+  }
+  
+  /* Style the list inside the menu */
+nav ul {
+    list-style-type: none;
+    padding: 0;
+    color: #fff;
+  }
+  /* Clear floats after the columns */
+section::after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+
+@media (max-width: 600px) {
+    nav, article {
+      width: 100%;
+      height: auto;
+    }
+  }
