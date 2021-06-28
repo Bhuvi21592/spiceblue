@@ -5,7 +5,7 @@ import {Row,Col,Card,Accordion} from 'react-bootstrap';
 import TaskForm from './TaskForm';
 import {TaskHeader,TaskHeaderPlus} from './TaskHeader';
 import { Eye,Trash} from 'react-bootstrap-icons';
-import {deleteTaskAction, loadTaskAction,getTaskAction} from '../saga/saga';
+import {deleteTaskAction, loadTaskAction,getTaskAction,hideFormAction} from '../saga/saga';
 import  "../css/style.css";
 class App extends React.Component{
   constructor(props){
@@ -21,14 +21,24 @@ class App extends React.Component{
   this.props.loadTasks();
   this.props.assigneeList();
 }
-  } 
+if (this.props.data && prevProps.data && prevProps.data.hideForm
+   && prevProps.data.hideForm !== this.props.data.hideForm){
+  this.hideForm();
+  this.props.hideFormAction(this.props.data);
+} 
+
+
+  }
   setFormState(){
     this.setState({showForm: !this.state.showForm })
    }
    showForm(){
     document.getElementById("expand").click();
+    this.props.hideFormAction(this.props.data);
    }
-  
+   hideForm(){
+    document.getElementById("collapse").click();
+   }
   render (){
     const {tasks = []} =this.props;
     const listItems =tasks.results && tasks.results.length> 0 && tasks.results.map((d) =>
@@ -76,7 +86,8 @@ class App extends React.Component{
 const mapStateToProps  = state => {
   return {
     tasks: state.task,
-    token:state.token
+    token:state.token,
+    data:state.data
   };
 };
 
@@ -92,7 +103,8 @@ const mapDispatchToProps = dispatch => {
         dispatch({type: 'FETCH_ASSIGNEE' })
       },
       deleteTaskAction:(data) =>  dispatch( deleteTaskAction(data)),
-      getTaskAction:(data) =>  dispatch( getTaskAction(data))
+      getTaskAction:(data) =>  dispatch( getTaskAction(data)),
+      hideFormAction:(data) =>dispatch( hideFormAction(data)),
   }
 };
 export default connect(

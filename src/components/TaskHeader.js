@@ -37,7 +37,7 @@ export function TaskHeaderPlus({eventKey,callback}) {
   return (
    
     <div style={{"float":"right","border-left":"1px solid #e2e1e1","padding-left":"10px","padding-top":"4px"}}
-      type="button"
+      type="button" id="collapse"
       onClick={toggleOnClick}
     >
       {!isCurrentEventKey &&<DashSquare  eventKey="0"/>}

@@ -58,6 +58,7 @@ function* addTasks(formdata) {
         });
         const body = yield call([users, users.json])
         alert(body.message);
+        body.hideForm=body.status.includes("success");
         yield put({type: action.ADD_TASKS_SUCCESS, data: body});        
         yield put(loadTaskAction());
         
@@ -105,6 +106,7 @@ function* addTasks(formdata) {
             const body = yield call([users, users.json])
             alert(body.message);
             yield put(loadTaskAction());
+            body.hideForm = false;
             yield put({type: action.ADD_TASKS_SUCCESS, data: body});
         } catch (e) {    
             yield put({type: action.ADD_TASKS_ERROR, error: e.message});  
@@ -138,7 +140,14 @@ function* addTasks(formdata) {
             yield put({type: action.GET_TASK_ERROR, error: e.message});  
         }
     }
-      
+    function* hideForm(data){
+        try { 
+            data.hideForm=false;
+            yield put({type: action.ADD_TASKS_SUCCESS, data});
+        } catch (e) {    
+            yield put({type: action.ADD_TASKS_ERROR, error: e.message});  
+        }
+    }
       
 
 function* updateTasks(formdata) {  
@@ -162,6 +171,7 @@ function* updateTasks(formdata) {
             });
         const body = yield call([users, users.json])
         alert(body.message);
+        body.hideForm=body.status.includes("success");
         yield put({type: action.ADD_TASKS_SUCCESS, data: body});
         yield put(loadTaskAction());
        
@@ -213,6 +223,12 @@ export const actionCreator=(data)=>({
         assigned_user:data.assigned_user,task_id:data.id}
 
   })
+  export const hideFormAction=(data)=>
+    ({
+     type:"HIDE_FORM",
+    data :data
+  })
+
   export const loadTaskAction=()=>({
     type: action.LOAD_TASKS
   })
@@ -224,6 +240,7 @@ export function* saga() {
         yield takeEvery(action.UPDATE_TASKS, updateTasks),
         yield takeEvery(action.DELETE_TASKS, deleteTasks),
         yield takeEvery(action.GET_TASK, getSingleTaskNoApi),
+        yield takeEvery("HIDE_FORM", hideForm),
         yield takeEvery(action.FETCH_ASSIGNEE, fetchAssignee)
     ]);
   }
